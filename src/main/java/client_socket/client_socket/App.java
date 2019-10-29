@@ -16,7 +16,7 @@ public class App implements Runnable
     public static void main( String[] args ) throws Exception
     {
 
-        try (var socket = new Socket("127.0.0.1", 4000)) {
+        try (var socket = new Socket("3.19.232.127", 4000)) {
         	System.out.println("Connected to server!");
         	var scanner = new Scanner(System.in);
         	var in = new Scanner(socket.getInputStream());
