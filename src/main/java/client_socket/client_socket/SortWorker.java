@@ -15,6 +15,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Consumer;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.HttpClientBuilder;
+
 public class SortWorker implements Runnable{
 
 	int num_experims;
@@ -38,7 +48,7 @@ public class SortWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running sort task on file %s", this.unsortedFilename));
         try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 
 			//TODO download files
 			this.downloadFile(this.unsortedFilename);
@@ -62,7 +72,7 @@ public class SortWorker implements Runnable{
 	}
 	
 	public void downloadFile(String filename) throws MalformedURLException, IOException {
-		String fileUrl = String.format("http://%s:7000/unsorted/%s", this.server_url, filename);
+		String fileUrl = String.format("http://%s:7000/mergesortfiles/%s", this.server_url, filename);
         BufferedInputStream inputStream = new BufferedInputStream(new URL(fileUrl).openStream());
        	FileOutputStream fileOS = new FileOutputStream(this.unsortedFilename); 
    	    byte data[] = new byte[1024];
@@ -126,8 +136,19 @@ public class SortWorker implements Runnable{
 		return outfile;
 	}
 	
-	public void upload(String filename) {
+	public void upload(String filename) throws ClientProtocolException, IOException {
 		//TODO upload file to server;
+		File file = new File(filename);
+		String posturl = String.format("http://%s:7000/api/resultfile", this.server_url);
+		HttpEntity entity = MultipartEntityBuilder.create()
+                 .addPart("sortfile", new FileBody(file))
+                 .build();
+
+		HttpPost request = new HttpPost(posturl);
+		request.setEntity(entity);
+
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpResponse response = client.execute(request);
 	}
 
 }
