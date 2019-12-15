@@ -1,5 +1,8 @@
 package client_socket.client_socket;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.function.Consumer;
 
 public class PIWorker implements Runnable{
@@ -20,15 +23,24 @@ public class PIWorker implements Runnable{
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
         System.out.println("Inside : " + Thread.currentThread().getName());	
+        System.out.println(String.format("Running %d calculations", this.num_experims));
         try {
-        	//TODO mergesort or pi calculation
 			Thread.sleep(10000);
 			int res = this.montecarlo(this.num_experims);
 			System.out.println("task completed!");
+			System.out.println("type something to finish");
+			//Enter data using BufferReader 
+	        BufferedReader reader =  
+	                   new BufferedReader(new InputStreamReader(System.in)); 
+	         
+	        // Reading data using readLine 
+	        reader.readLine(); 
 			this.onComplete.accept(res);
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
