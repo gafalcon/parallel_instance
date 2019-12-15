@@ -31,6 +31,7 @@ public class SortWorker implements Runnable{
 	String unsortedFilename;
 	Consumer<String> onComplete;
 	String server_url = App.server_url;
+	String FILES_DIR = App.FILES_DIRL;
 
 	public SortWorker(String unsortedFile, Consumer<String> onComplete) {
 		this.unsortedFilename = unsortedFile;
@@ -72,9 +73,9 @@ public class SortWorker implements Runnable{
 	}
 	
 	public void downloadFile(String filename) throws MalformedURLException, IOException {
-		String fileUrl = String.format("http://%s:7000/mergesortfiles/%s", this.server_url, filename);
+		String fileUrl = String.format("http://%s:7000/mergesortfiles/%s", this.server_url,filename);
         BufferedInputStream inputStream = new BufferedInputStream(new URL(fileUrl).openStream());
-       	FileOutputStream fileOS = new FileOutputStream(this.unsortedFilename); 
+       	FileOutputStream fileOS = new FileOutputStream(this.FILES_DIR+this.unsortedFilename); 
    	    byte data[] = new byte[1024];
   	    int byteContent;
  	    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
@@ -85,7 +86,7 @@ public class SortWorker implements Runnable{
 	
 	public String sort() {
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		File file = new File(this.unsortedFilename);
+		File file = new File(this.FILES_DIR+this.unsortedFilename);
 		BufferedReader r = null;
 		try {
 		    r = new BufferedReader(new FileReader(file));
@@ -108,7 +109,7 @@ public class SortWorker implements Runnable{
 		String outfile = "sorted_"+this.unsortedFilename;
 		BufferedWriter wr = null;
 		try {
-			wr = new BufferedWriter(new FileWriter(outfile));
+			wr = new BufferedWriter(new FileWriter(this.FILES_DIR+outfile));
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +139,7 @@ public class SortWorker implements Runnable{
 	
 	public void upload(String filename) throws ClientProtocolException, IOException {
 		//TODO upload file to server;
-		File file = new File(filename);
+		File file = new File(this.FILES_DIR+filename);
 		String posturl = String.format("http://%s:7000/api/resultfile", this.server_url);
 		HttpEntity entity = MultipartEntityBuilder.create()
                  .addPart("sortfile", new FileBody(file))

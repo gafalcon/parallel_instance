@@ -27,6 +27,7 @@ public class MergeWorker implements Runnable{
 	String leftFilename, rightFilename;
 	Consumer<String> onComplete;
 	String server_url = App.server_url;
+	String FILES_DIR = App.FILES_DIRL;
 
 	public MergeWorker(String leftFile, String rightFile, Consumer<String> onComplete) {
 		this.leftFilename = leftFile;
@@ -45,7 +46,7 @@ public class MergeWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running merge task"));
         try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 
 			this.downloadFile(leftFilename);
 
@@ -68,7 +69,7 @@ public class MergeWorker implements Runnable{
 	public void downloadFile(String filename) throws MalformedURLException, IOException {
 		String fileUrl = String.format("http://%s:7000/mergesortfiles/%s", this.server_url, filename);
         BufferedInputStream inputStream = new BufferedInputStream(new URL(fileUrl).openStream());
-       	FileOutputStream fileOS = new FileOutputStream(filename); 
+       	FileOutputStream fileOS = new FileOutputStream(this.FILES_DIR+filename); 
    	    byte data[] = new byte[1024];
   	    int byteContent;
  	    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
@@ -79,7 +80,7 @@ public class MergeWorker implements Runnable{
 	
 	public ArrayList<Integer> readFile(String filename) throws NumberFormatException, IOException {
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		File file = new File(filename);
+		File file = new File(this.FILES_DIR+filename);
 		BufferedReader r = new BufferedReader(new FileReader(file));
 		String text = null;
 		while ((text = r.readLine()) != null) {
@@ -137,7 +138,7 @@ public class MergeWorker implements Runnable{
 		
 		BufferedWriter wr = null;
 		  try {
-			wr = new BufferedWriter(new FileWriter(resfile));
+			wr = new BufferedWriter(new FileWriter(this.FILES_DIR+resfile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -164,7 +165,7 @@ public class MergeWorker implements Runnable{
 	
 	public void upload(String filename) throws ClientProtocolException, IOException {
 		//TODO upload file to server;
-		File file = new File(filename);
+		File file = new File(this.FILES_DIR+filename);
 		String posturl = String.format("http://%s:7000/api/resultfile", this.server_url);
 		HttpEntity entity = MultipartEntityBuilder.create()
                  .addPart("sortfile", new FileBody(file))

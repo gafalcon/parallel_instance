@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public class App implements Runnable
 {
+	public static final String FILES_DIRL = "./msfiles/";
 	static Thread work_thread;
 	static PrintWriter out;
 	static String server_url = "localhost";
@@ -30,6 +31,7 @@ public class App implements Runnable
         			var msgs = msg.split(",");
         			int num_experims = Integer.parseInt(msgs[1]);
         			PIWorker.startNewPIWorker(num_experims, n -> {
+        				System.out.println("Task completed!");
         				out.println("END,"+Integer.toString(n));
         			});
         		}else if (msg.startsWith("MERGE")) {
@@ -37,12 +39,14 @@ public class App implements Runnable
         			String leftFile = msgs[1];
         			String rightFile = msgs[2];
         			MergeWorker.startNewMergeWorker(leftFile, rightFile, filename -> {
+        				System.out.println("Task completed!");
         				out.println(String.format("END,%s", filename));
         			});
         		}else if (msg.startsWith("SORT")) {
         			var msgs = msg.split(",");
         			String unsortedFile = msgs[1];
         			SortWorker.startNewSortWorker(unsortedFile, filename -> {
+        				System.out.println("Task completed!");
         				out.println(String.format("END,%s", filename));
         			});
         		}
