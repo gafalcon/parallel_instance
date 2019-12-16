@@ -26,7 +26,7 @@ public class PIWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running %d calculations", this.num_experims));
         try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 			int res = this.montecarlo(this.num_experims);
 			System.out.println("task completed!");
 			System.out.println("type something to finish");

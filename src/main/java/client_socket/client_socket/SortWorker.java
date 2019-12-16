@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -59,6 +60,15 @@ public class SortWorker implements Runnable{
 			//TODO upload file
 			this.upload(sortedFilename);
 			//Send name of merged file
+
+			System.out.println("task completed!");
+			System.out.println("type something to finish");
+			//Enter data using BufferReader 
+	        BufferedReader reader =  
+	                   new BufferedReader(new InputStreamReader(System.in)); 
+	         
+	        // Reading data using readLine 
+	        reader.readLine(); 
 			this.onComplete.accept(sortedFilename);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

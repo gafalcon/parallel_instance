@@ -7,11 +7,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.apache.http.HttpEntity;
@@ -56,6 +58,14 @@ public class MergeWorker implements Runnable{
 
 			this.upload(mergedFilename);
 
+			System.out.println("task completed!");
+			System.out.println("type something to finish");
+			//Enter data using BufferReader 
+	        BufferedReader reader =  
+	                   new BufferedReader(new InputStreamReader(System.in)); 
+	         
+	        // Reading data using readLine 
+	        reader.readLine(); 
 			this.onComplete.accept(mergedFilename);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -132,9 +142,9 @@ public class MergeWorker implements Runnable{
 			}
 		}
 		
-		Path rightFilePath = Paths.get(this.leftFilename);
-		Path leftFilePath = Paths.get(this.rightFilename);
-		String resfile = "merged_"+leftFilePath.getFileName().toString() + rightFilePath.getFileName().toString();
+		//Path rightFilePath = Paths.get(this.leftFilename);
+		//Path leftFilePath = Paths.get(this.rightFilename);
+		String resfile = "merged_"+ UUID.randomUUID(); 
 		
 		BufferedWriter wr = null;
 		  try {
