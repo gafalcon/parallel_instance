@@ -4,11 +4,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+
 /**
  * Hello world!
  *
  */
-public class App implements Runnable
+public class App
 {
 	public static final String FILES_DIRL = "./msfiles/";
 	static Thread work_thread;
@@ -24,6 +25,13 @@ public class App implements Runnable
         	var scanner = new Scanner(System.in);
         	var in = new Scanner(socket.getInputStream());
         	out = new PrintWriter(socket.getOutputStream(), true);
+        	
+        	CPUMeasure.startCPUMeasure(measurement ->  {
+        		String msg = String.format("CPU %f", measurement);
+        		System.out.println(msg);
+        		out.println(msg);
+        	});
+        	
         	while(in.hasNextLine()) {
         		var msg = in.nextLine();
         		//TODO depending on data start a new job
@@ -57,23 +65,10 @@ public class App implements Runnable
         	System.out.println("End of connection");
         	scanner.close();
         	in.close();
+        	out.close();
         	socket.close();
         }
     }
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-        System.out.println("Inside : " + Thread.currentThread().getName());	
-        try {
-        	//TODO mergesort or pi calculation
-			Thread.sleep(10000);
-			out.println("End");
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-    
     
 }
