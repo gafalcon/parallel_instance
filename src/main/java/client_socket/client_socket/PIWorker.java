@@ -26,21 +26,17 @@ public class PIWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running %d calculations", this.num_experims));
         try {
-			Thread.sleep(1000);
 			int res = this.montecarlo(this.num_experims);
-			System.out.println("task completed!");
-			System.out.println("type something to finish");
-			//Enter data using BufferReader 
-	        BufferedReader reader =  
-	                   new BufferedReader(new InputStreamReader(System.in)); 
-	         
-	        // Reading data using readLine 
-	        reader.readLine(); 
+//			System.out.println("task completed!");
+//			System.out.println("type something to finish");
+//			//Enter data using BufferReader 
+//	        BufferedReader reader =  
+//	                   new BufferedReader(new InputStreamReader(System.in)); 
+//	         
+//	        // Reading data using readLine 
+//	        reader.readLine(); 
 			this.onComplete.accept(res);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

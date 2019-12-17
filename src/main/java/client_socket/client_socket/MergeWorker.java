@@ -48,7 +48,7 @@ public class MergeWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running merge task"));
         try {
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
 
 			this.downloadFile(leftFilename);
 
@@ -58,17 +58,15 @@ public class MergeWorker implements Runnable{
 
 			this.upload(mergedFilename);
 
-			System.out.println("task completed!");
-			System.out.println("type something to finish");
-			//Enter data using BufferReader 
-	        BufferedReader reader =  
-	                   new BufferedReader(new InputStreamReader(System.in)); 
-	         
-	        // Reading data using readLine 
-	        reader.readLine(); 
+//			System.out.println("task completed!");
+//			System.out.println("type something to finish");
+//			//Enter data using BufferReader 
+//	        BufferedReader reader =  
+//	                   new BufferedReader(new InputStreamReader(System.in)); 
+//	         
+//	        // Reading data using readLine 
+//	        reader.readLine(); 
 			this.onComplete.accept(mergedFilename);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -50,7 +50,6 @@ public class SortWorker implements Runnable{
         System.out.println("Inside : " + Thread.currentThread().getName());	
         System.out.println(String.format("Running sort task on file %s", this.unsortedFilename));
         try {
-			Thread.sleep(1000);
 
 			//TODO download files
 			this.downloadFile(this.unsortedFilename);
@@ -61,18 +60,15 @@ public class SortWorker implements Runnable{
 			this.upload(sortedFilename);
 			//Send name of merged file
 
-			System.out.println("task completed!");
-			System.out.println("type something to finish");
-			//Enter data using BufferReader 
-	        BufferedReader reader =  
-	                   new BufferedReader(new InputStreamReader(System.in)); 
-	         
-	        // Reading data using readLine 
-	        reader.readLine(); 
+//			System.out.println("task completed!");
+//			System.out.println("type something to finish");
+//			//Enter data using BufferReader 
+//	        BufferedReader reader =  
+//	                   new BufferedReader(new InputStreamReader(System.in)); 
+//	         
+//	        // Reading data using readLine 
+//	        reader.readLine(); 
 			this.onComplete.accept(sortedFilename);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
